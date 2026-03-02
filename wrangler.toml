@@ -1,0 +1,29 @@
+name = "ham-annotation"
+main = "src/worker.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare Pages tidak dipakai — kita pakai Workers + Assets
+# karena kita butuh server-side logic (API routes)
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "ham-annotation-db"
+database_id = "GANTI_DENGAN_ID_DARI_wrangler_d1_create"
+
+# Environment variables (secrets di-set via: wrangler secret put NAMA)
+[vars]
+ADMIN_KEY = "dev-only-change-in-production"
+GITHUB_REPO = "username/ham-annotation-app"
+GITHUB_BACKUP_BRANCH = "data-backup"
+GEMINI_MODEL = "gemini-2.0-flash"
+
+# Cron trigger untuk backup harian ke GitHub
+[triggers]
+crons = ["0 17 * * *"]
+# 17:00 UTC = 00:00 WIB (UTC+7)

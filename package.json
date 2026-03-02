@@ -1,0 +1,27 @@
+{
+  "name": "ham-annotation-app",
+  "version": "1.0.0",
+  "description": "Platform anotasi HAM untuk putusan pengadilan Indonesia — Cloudflare Workers + D1",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "d1:init": "wrangler d1 execute ham-annotation-db --file=./migrations/001_schema.sql",
+    "d1:seed-ham": "wrangler d1 execute ham-annotation-db --file=./migrations/002_seed_ham.sql",
+    "d1:local": "wrangler d1 execute ham-annotation-db --local --file=./migrations/001_schema.sql",
+    "d1:seed-local": "wrangler d1 execute ham-annotation-db --local --file=./migrations/002_seed_ham.sql",
+    "build:client": "bun build src/client/main.tsx --outdir=public/dist --minify --target=browser",
+    "setup": "bun run build:client && bun run d1:init && bun run d1:seed-ham",
+    "setup:local": "bun run build:client && bun run d1:local && bun run d1:seed-local"
+  },
+  "dependencies": {
+    "hono": "^4.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@types/bun": "latest",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.78.0"
+  }
+}
